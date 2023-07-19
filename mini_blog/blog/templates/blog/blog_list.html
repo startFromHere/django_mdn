@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Blogs</title>
+{% endblock title %}
+
+{% block content %}
+    <h1>Mini Blog Home</h1>
+    <ul>
+        {% for blog in blog_list %}
+            <li>
+                <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+                <span>{{ blog.create_date }}</span>
+                ---
+                <a href="{{ blog.blogger.get_absolute_url }}">{{ blog.blogger }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
+

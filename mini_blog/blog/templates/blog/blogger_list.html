@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Bloggers</title>
+{% endblock title %}
+
+{% block content %}
+    <p>博主列表：</p>
+    <ul>
+        {% for blogger in blogger_list %}
+            <li>
+                <a href="{{ blogger.get_absolute_url }}">{{ blogger.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
