@@ -1,0 +1,24 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Comments</title>
+{% endblock title %}
+
+{% block content %}
+    <h1>Comment for {{blog}}</h1>
+
+    <ul>
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for comment in comment_list %}
+            <li>
+                <input type="checkbox">
+                {{comment.user_name}}: &nbsp;&nbsp; {{ comment.content }}
+            </li>
+            {% endfor %}
+            <input type="Submit" id="deleteButton" value="删除选中的评论">  
+        </form>
+
+    </ul>
+    
+{% endblock content %}

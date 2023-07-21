@@ -38,6 +38,11 @@ class Blog(models.Model):
         # fixme： 上面的写法可以吗？
         return reverse("comment_create", kwargs={'pk': self.pk})
     
+    def get_comments_manage_url(self):
+        # return "{% url 'comment_create' %}?pk={{self.pk}}"
+        # fixme： 上面的写法可以吗？
+        return reverse("comments_manage", kwargs={'pk': self.pk})
+    
 
 class Comment(models.Model):
     user_name = models.CharField(max_length=200)

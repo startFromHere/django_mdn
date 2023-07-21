@@ -10,6 +10,7 @@
     <p>创作日期：{{ blog.create_date }}</p>
     <div>{{ blog.content }}</div>
     <hr>
+    {% if blog.comment_set.all.count > 0 %}
     <p>网友评论：</p>
     {% for comment in blog.comment_set.all %}
         <div>
@@ -20,6 +21,11 @@
             <p>{{ comment.content }} </p>
         </div>
     {% endfor %}
+    {% if user.get_username == 'liutao' %}
+    <a href="{{ blog.get_comments_manage_url }}">管理评论</a>
+    {% endif %}
+    {% endif %}
+    
     {% if user.is_authenticated %}
     {% comment %} <a href="{% url 'comment_create' kwargs={'pk': {{ blog.pk }} } %}">添加评论</a> {% endcomment %}
     {% comment %} fixme:上面的方式应该怎么写？ {% endcomment %}
