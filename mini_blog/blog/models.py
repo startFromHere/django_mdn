@@ -25,6 +25,7 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ["-create_date"]
+        permissions = (("can_add_comment", "add a comment"),)
 
     def __str__(self) -> str:
         return self.title
@@ -32,11 +33,16 @@ class Blog(models.Model):
     def get_absolute_url(self):
         return reverse("blog_detail", kwargs={"pk": self.pk})
     
+    def get_comment_url(self):
+        # return "{% url 'comment_create' %}?pk={{self.pk}}"
+        # fixme： 上面的写法可以吗？
+        return reverse("comment_create", kwargs={'pk': self.pk})
+    
 
 class Comment(models.Model):
     user_name = models.CharField(max_length=200)
     content = models.TextField(help_text='comment content')
-    post_date = models.DateField(null=True, blank=True)
+    post_date = models.DateField(auto_now_add=True)
     blog = models.ForeignKey('Blog', on_delete=models.SET_NULL, null=True)
     
     class Meta:

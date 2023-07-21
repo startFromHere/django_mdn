@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <p>hello {{user_name}}, please input your comment:</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="Submit" value="Submit">
+    </form>
+
+{% endblock content %}
