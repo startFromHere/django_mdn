@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h1>编辑</h1>
+    <p>{{info.name}} {{info.age}}</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="Submit" value='保存'>
+    </form>
+{% endblock content %}
+

@@ -3,11 +3,13 @@ from django.db import models
 from datetime import date
 import uuid
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Blogger(models.Model):
     name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     intro = models.TextField(help_text='info of this author')
 
     def get_absolute_url(self):
@@ -25,13 +27,16 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ["-create_date"]
-        permissions = (("can_add_comment", "add a comment"),)
+        # permissions = (("can_edit_blog", "Can change blog"),)
 
     def __str__(self) -> str:
         return self.title
     
     def get_absolute_url(self):
         return reverse("blog_detail", kwargs={"pk": self.pk})
+
+    def get_edit_url(self):
+        return reverse("blog_edit", kwargs={'pk': self.pk})
     
     def get_comment_url(self):
         # return "{% url 'comment_create' %}?pk={{self.pk}}"
@@ -39,8 +44,6 @@ class Blog(models.Model):
         return reverse("comment_create", kwargs={'pk': self.pk})
     
     def get_comments_manage_url(self):
-        # return "{% url 'comment_create' %}?pk={{self.pk}}"
-        # fixme： 上面的写法可以吗？
         return reverse("comments_manage", kwargs={'pk': self.pk})
     
 
@@ -52,6 +55,7 @@ class Comment(models.Model):
     
     class Meta:
         ordering = ["post_date"]
+        # permissions = (("can_delete_comment", "Can delete comment"),)
 
     def __str__(self) -> str:
         return self.user_name + ":" + self.content[:20]

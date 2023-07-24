@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Blogger, Blog, Comment
 from django.contrib.auth.models import User
+# from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 # Create your views here.
@@ -45,7 +47,21 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 # from models import Blog
 
-class CommentCreate(LoginRequiredMixin, CreateView):
+class BlogEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'blog.change_blog'
+    template_name = 'blog/blog_edit.html'
+    model = Blog
+    fields = ["title", "content"]
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
+    
+
+
+
+class CommentCreate(LoginRequiredMixin, PermissionRequiredMixin , CreateView):
+    permission_required = 'blog.add_comment'
     model = Comment
     fields = ['content']
 
@@ -90,7 +106,10 @@ class CommentList(generic.ListView):
         blog = get_object_or_404(Blog, pk = self.kwargs['pk']) 
         return blog.get_absolute_url()
 
-class CommentsManage(generic.ListView):
+# @permission_required('blog.edit_comment')
+# from django.contrib.auth.mixins import PermissionRequiredMixin
+class CommentsManage(PermissionRequiredMixin, generic.ListView):
+    permission_required = 'blog.delete_comment'
     model = Comment
     template_name = 'blog/comment_manage.html'
 

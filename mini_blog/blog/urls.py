@@ -10,12 +10,12 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('<int:pk>/comment/create', views.CommentCreate.as_view(), name='comment_create'),
+    path('<int:pk>/edit', views.BlogEditView.as_view(), name='blog_edit', kwargs={'slug': None}),
 ]
 
-# urlpatterns += [
-#     path('<int:pk>/comments/', views.CommentList.as_view(), name='comments_manage'),
-# ]
+urlpatterns += [
+    path('<int:pk>/comment/create', views.CommentCreate.as_view(), name='comment_create'),
+]
 
 urlpatterns += [
     path('blog/<int:pk>/comment/manage', views.CommentsManage.as_view(), name='comments_manage'),
